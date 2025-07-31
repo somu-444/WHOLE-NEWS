@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WHOLE NEWS</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f0f0f0;
+      background-image: url('https://www.transparenttextures.com/patterns/white-wall-3.png');
+    }
+    header {
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(10px);
+      padding: 40px 20px 20px 20px;
+      margin-top: 20px;
+      text-align: center;
+      font-size: 30px;
+      font-weight: bold;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .login-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #333;
+      color: white;
+      border: none;
+      padding: 8px 20px;
+      font-weight: bold;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    nav {
+      text-align: center;
+      margin: 10px 0 20px 0;
+    }
+    nav button {
+      background-color: #333;
+      color: white;
+      padding: 10px 16px;
+      margin: 8px;
+      border: none;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    nav button:hover, nav button.active {
+      background-color: #555;
+    }
+    .news-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 10px;
+    }
+    .news-card {
+      max-width: 800px;
+      width: 100%;
+      padding: 25px;
+      background-color: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+      margin: 15px 0;
+      text-align: left;
+    }
+    .news-card h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .news-card img {
+      width: 100%;
+      max-height: 350px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin: 20px 0;
+    }
+    .news-card p {
+      font-size: 16px;
+      color: #555;
+      line-height: 1.6;
+      white-space: pre-line;
+    }
+    .pagination {
+      text-align: center;
+      padding: 20px;
+    }
+    .pagination button {
+      padding: 10px 20px;
+      margin: 5px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .pagination button:hover {
+      background-color: #555;
+    }
+    .footer-date {
+      position: fixed;
+      bottom: 10px;
+      left: 20px;
+      font-size: 14px;
+      color: #333;
+      font-weight: bold;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 6px 12px;
+      border-radius: 6px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+    /* Login Modal */
+    #loginModal {
+      display: none;
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      z-index: 999;
+    }
+    #loginModal input {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      width: 100%;
+    }
+    #closeModal {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  WHOLE NEWS
+  <button class="login-btn" onclick="openLogin()">Login</button>
+</header>
+
+<nav>
+  <button onclick="selectCategory('Sports', this)">Sports</button>
+  <button onclick="selectCategory('Politics', this)">Politics</button>
+  <button onclick="selectCategory('Business', this)">Business</button>
+  <button onclick="selectCategory('Technology', this)">Technology</button>
+  <button onclick="selectCategory('Entertainment', this)">Entertainment</button>
+</nav>
+
+<div class="news-section" id="news-container"></div>
+
+<div class="pagination">
+  <button id="prevBtn" onclick="prevCategory()">Previous</button>
+  <button id="nextBtn" onclick="nextCategory()">Next</button>
+</div>
+
+<div class="footer-date" id="dateDisplay"></div>
+
+<!-- Login Modal -->
+<div id="loginModal">
+  <span id="closeModal" onclick="closeLogin()">✖</span>
+  <h3>Login</h3>
+  <input type="text" placeholder="Username">
+  <input type="password" placeholder="Password">
+  <button onclick="alert('Logged in!')">Login</button>
+</div>
+
+<script>
+const categories = ['Sports', 'Politics', 'Business', 'Technology', 'Entertainment'];
+let currentCategoryIndex = 0;
+
+// Each category now has a single, detailed news item (10+ lines in desc string)
+const newsData = {
+  'Sports': [
+    { 
+      title: "SL vs BAN: Intense Thriller in the Cricket World",
+      img: "https://via.placeholder.com/700x350?text=Sports",
+      desc: `Sri Lanka and Bangladesh faced off in a packed international stadium amid roaring fans and global anticipation.
+The opening overs saw disciplined bowling stifling batsman aggression, setting a tense atmosphere early.
+Bangladesh's middle order displayed resilience, building crucial partnerships after early wickets tumbled.
+Sri Lanka responded with experienced spin, keeping pressure and generating opportunities for run-outs.
+Several near-miss catches and spectacular fielding fueled the crowd’s energy as the match progressed.
+The turning point arrived when Bangladesh smashed back-to-back sixes, swinging momentum temporarily in their favor.
+Not to be outdone, Sri Lankan bowlers fought back in the death overs with pinpoint yorkers.
+A dramatic last-over saw the required runs fluctuating with every ball, hearts pounding across both nations.
+The match concluded with strategic brilliance and mutual respect among teams for exceptional sportsmanship.
+Post-match, analysts described it as an instant classic, sure to inspire future cricket generations.`
+    }
+  ],
+  'Politics': [
+    {
+      title: "Bridgewater Suspended: The Week That Shook Parliament",
+      img: "https://via.placeholder.com/700x350?text=Politics",
+      desc: `Chaos erupted in Parliament as news broke of Minister Bridgewater's sudden and unexpected suspension late Monday night.
+An official statement cited procedural violations during high-profile budget debates, igniting widespread public debate.
+Opposition leaders seized the opportunity to demand an independent inquiry into all recent ministerial decisions.
+Supporters of the minister took to the streets with peaceful protests, voicing confidence in his eventual exoneration.
+Social media platforms were inundated with theories and speculation throughout the week.
+Inside government circles, alliances shifted as pressure mounted for transparency and swift resolution.
+Legal advisors were summoned for urgent consultations, signaling the seriousness of the allegations.
+Meanwhile, day-to-day governance remained mostly stable under acting ministers and senior bureaucrats.
+International observers urged calm and praised the nation’s legal system for handling the crisis.
+A special committee will publish its findings next week, expected to reshape the political landscape for years to come.`
+    }
+  ],
+  'Business': [
+    {
+      title: "Market Hits New High: Investors Optimistic",
+      img: "https://via.placeholder.com/700x350?text=Business",
+      desc: `Stock markets around the globe soared to unprecedented heights this week, lifting both investor confidence and economic outlooks.
+Major indices touched all-time highs, driven by strong earnings from technology and healthcare giants.
+Market analysts attributed the rise to renewed optimism about global trade deals ratified this quarter.
+Venture capital funding ballooned as startups announced major breakthroughs in renewable energy sectors.
+Established corporations revealed ambitious expansion plans, spurring waves of hiring and infrastructure investment.
+Despite the euphoria, financial advisors warned about potential corrections and the need for portfolio diversity.
+Central banks issued statements expressing vigilance amid inflation risks and currency fluctuations.
+Consumer sentiment remained robust, with retail and real estate sectors posting double-digit growth.
+International markets in Asia and Europe mirrored US trends, benefiting from increased cross-border trade.
+Looking forward, experts anticipate careful monitoring of policy shifts and continued focus on sustainable investment for long-term stability.`
+    }
+  ],
+  'Technology': [
+    {
+      title: "AI Revolutionizes Daily Life in 2025",
+      img: "https://via.placeholder.com/700x350?text=Technology",
+      desc: `In 2025, artificial intelligence has permeated nearly every aspect of human existence with unprecedented speed.
+Smart assistants manage schedules, monitor health, and even anticipate emotional well-being for millions worldwide.
+Robotics has dramatically improved manufacturing, shipping, and agricultural productivity through faster, safer processes.
+AI-driven diagnostics regularly outperform traditional methods, driving precision in diseases’ early detection.
+Ethical frameworks have become a focal point as societies debate data privacy and algorithmic accountability.
+Educational systems now incorporate adaptive learning platforms, reshaping the classroom for teachers and students alike.
+Startups harness neural networks to create art, compose music, and innovate across creative fields.
+Major cities deploy AI traffic systems to reduce congestion and environmental impact.
+Tech leaders and government agencies collaborate to balance innovation with consumer protection and digital rights.
+The world watches as AI's evolution prompts both optimism for progress and caution about its broader social influences.`
+    }
+  ],
+  'Entertainment': [
+    {
+      title: "Blockbuster Awards Night: A Galaxy of Stars",
+      img: "https://via.placeholder.com/700x350?text=Entertainment",
+      desc: `Hollywood’s grandest awards night set the stage for a dazzling celebration of talent and artistic achievement.
+Red carpet appearances dazzled with designer fashion and impromptu interviews from industry legends and newcomers.
+Hosts amused the global audience with clever monologues that went viral on social media.
+Diversity was championed across categories, with breakthrough performances by actors from underrepresented backgrounds.
+Best Film honors went to an indie production about climate change, making headlines worldwide.
+Powerful acceptance speeches moved viewers, highlighting issues from mental health to gender equity in film.
+The after-parties buzzed with exclusive collaborations between filmmakers, musicians, and digital creators.
+Documentaries received more recognition than ever before, reflecting changing audience tastes.
+Interactive streaming events brought global fans together, heralding a new era in entertainment.
+Critics hailed the ceremony for fostering creativity, inclusivity, and the spirit of cinematic art.`
+    }
+  ]
+};
+
+function displayNews() {
+  const category = categories[currentCategoryIndex];
+  const container = document.getElementById("news-container");
+  const newsItem = newsData[category][0]; // Only one news box per category
+
+  container.innerHTML = `
+    <div class="news-card">
+      <strong>${category}</strong>
+      <h2>${newsItem.title}</h2>
+      <img src="${newsItem.img}" alt="${newsItem.title}">
+      <p>${newsItem.desc}</p>
+    </div>
+  `;
+
+  // Update button 'active' state in nav
+  document.querySelectorAll('nav button').forEach((btn, idx) => {
+    if(idx === currentCategoryIndex) btn.classList.add('active');
+    else btn.classList.remove('active');
+  });
+}
+
+function nextCategory() {
+  currentCategoryIndex = (currentCategoryIndex + 1) % categories.length;
+  displayNews();
+}
+
+function prevCategory() {
+  currentCategoryIndex = (currentCategoryIndex - 1 + categories.length) % categories.length;
+  displayNews();
+}
+
+function selectCategory(category, button) {
+  currentCategoryIndex = categories.indexOf(category);
+  displayNews();
+}
+
+function openLogin() {
+  document.getElementById("loginModal").style.display = "block";
+}
+
+function closeLogin() {
+  document.getElementById("loginModal").style.display = "none";
+}
+
+// Show today's date
+document.getElementById("dateDisplay").textContent = "Date: " + new Date().toLocaleDateString();
+
+// Initial display
+displayNews();
+</script>
+
+</body>
+</html>
